@@ -131,6 +131,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         menu.addItem(NSMenuItem.separator())
         
         // 3. System operations
+        let aboutItem = NSMenuItem(title: "About FreeSizeUp", action: #selector(showAboutPanel), keyEquivalent: "")
+        aboutItem.target = self
+        if let icon = NSImage.createSchematicIcon(for: nil, systemSymbolName: "info.circle") {
+            aboutItem.image = icon
+        }
+        menu.addItem(aboutItem)
+        
         let preferencesItem = NSMenuItem(title: "Preferences...", action: #selector(openPreferencesMenu), keyEquivalent: ",")
         preferencesItem.target = self
         if let icon = NSImage.createSchematicIcon(for: nil, systemSymbolName: "gearshape") {
@@ -179,6 +186,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @objc private func triggerAction(_ sender: NSMenuItem) {
         guard let action = sender.representedObject as? WindowAction else { return }
         WindowManager.shared.performAction(action)
+    }
+    
+    @objc private func showAboutPanel() {
+        NSApplication.shared.activate(ignoringOtherApps: true)
+        NSApplication.shared.orderFrontStandardAboutPanel(nil)
     }
     
     @objc private func openPreferencesMenu() {

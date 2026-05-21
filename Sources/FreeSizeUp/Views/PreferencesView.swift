@@ -80,7 +80,7 @@ struct PreferencesView: View {
                 Spacer()
                 
                 // Sidebar Footer with version info
-                Text("v1.0.0 (Beta)")
+                Text("v\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.1.0")")
                     .font(.system(.caption, design: .rounded))
                     .foregroundColor(.secondary.opacity(0.7))
                     .padding(.horizontal, 16)

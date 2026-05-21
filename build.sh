@@ -3,10 +3,14 @@ set -e
 
 echo "🔨 Building FreeSizeUp..."
 
-# 1. Compile in Release mode using Swift PM
-swift build -c release
+# 1. Compile in Release mode using Swift PM for both architectures if possible
+echo "🏗️ Compiling for Apple Silicon (arm64)..."
+swift build -c release --triple arm64-apple-macosx
 
-# 2. Setup bundle paths
+echo "🏗️ Compiling for Intel (x86_64)..."
+swift build -c release --triple x86_64-apple-macosx
+
+# Setup bundle paths
 APP_DIR="FreeSizeUp.app"
 CONTENTS_DIR="$APP_DIR/Contents"
 MACOS_DIR="$CONTENTS_DIR/MacOS"
@@ -15,6 +19,20 @@ RESOURCES_DIR="$CONTENTS_DIR/Resources"
 echo "📂 Creating application bundle directory structure..."
 mkdir -p "$MACOS_DIR"
 mkdir -p "$RESOURCES_DIR"
+
+if [ -f ".build/arm64-apple-macosx/release/FreeSizeUp" ] && [ -f ".build/x86_64-apple-macosx/release/FreeSizeUp" ]; then
+    echo "🔗 Packaging architectures into Universal Binary..."
+    mkdir -p .build/universal
+    lipo -create \
+      .build/arm64-apple-macosx/release/FreeSizeUp \
+      .build/x86_64-apple-macosx/release/FreeSizeUp \
+      -output .build/universal/FreeSizeUp
+    BINARY_PATH=".build/universal/FreeSizeUp"
+else
+    echo "⚠️ Universal binary compilation not completed, building default host architecture..."
+    swift build -c release
+    BINARY_PATH="$(swift build -c release --show-bin-path)/FreeSizeUp"
+fi
 
 # 3. Compile high-resolution AppIcon from Screenshots/app_icon.png if it exists
 if [ -f "Screenshots/app_icon.png" ]; then
@@ -39,10 +57,12 @@ fi
 
 # 4. Copy executable binary to App Bundle
 echo "🚀 Copying compiled executable to bundle..."
-cp ".build/release/FreeSizeUp" "$MACOS_DIR/FreeSizeUp"
+cp "$BINARY_PATH" "$MACOS_DIR/FreeSizeUp"
+
 
 # 5. Create standard Info.plist configuration file
 echo "📄 Writing Info.plist configuration..."
+APP_VERSION="${VERSION:-1.1.0}"
 cat <<EOF > "$CONTENTS_DIR/Info.plist"
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -55,7 +75,11 @@ cat <<EOF > "$CONTENTS_DIR/Info.plist"
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
-    <string>1.0.0</string>
+    <string>$APP_VERSION</string>
+    <key>CFBundleVersion</key>
+    <string>$APP_VERSION</string>
+    <key>NSHumanReadableCopyright</key>
+    <string>Copyright © 2026 wbangin. All rights reserved.</string>
     <key>CFBundleExecutable</key>
     <string>FreeSizeUp</string>
     <key>CFBundleIconFile</key>
