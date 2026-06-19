@@ -69,7 +69,19 @@ Here is a preview of the modernized user interface, layout configurations, and t
 *   macOS 13.0 or later (Ventura / Sonoma / Sequoia)
 *   Xcode 14.0+ or Command Line Tools (with Swift compiler installed)
 
-### 🔨 Build Instructions
+### 🚀 Downloading Pre-built Release (Recommended)
+1. Go to the [Releases page](https://github.com/wbangin/free-sizeup/releases) and download the DMG for your architecture.
+2. Open the DMG and drag `FreeSizeUp.app` into your `/Applications` folder.
+3. **Important for GitHub Downloads**: Since this is a free open-source app without a paid Apple Developer certificate, macOS Gatekeeper may show an error saying **"FreeSizeUp is damaged and can't be opened"**. 
+   To fix this, simply open Terminal and run:
+   ```bash
+   xattr -cr /Applications/FreeSizeUp.app
+   ```
+   After running this command, you can launch the app normally.
+
+---
+
+### 🔨 Build from Source Instructions
 1.  Clone or download this repository:
     ```bash
     git clone https://github.com/yourusername/free-sizeup.git
