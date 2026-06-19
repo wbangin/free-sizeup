@@ -62,7 +62,7 @@ cp "$BINARY_PATH" "$MACOS_DIR/FreeSizeUp"
 
 # 5. Create standard Info.plist configuration file
 echo "📄 Writing Info.plist configuration..."
-APP_VERSION="${VERSION:-1.1.1}"
+APP_VERSION="${VERSION:-1.1.2}"
 cat <<EOF > "$CONTENTS_DIR/Info.plist"
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -95,6 +95,23 @@ cat <<EOF > "$CONTENTS_DIR/Info.plist"
 </dict>
 </plist>
 EOF
+
+echo "📄 Generating Install.command script for DMG..."
+cat << 'EOF' > Install.command
+#!/bin/bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+echo "📦 Installing FreeSizeUp to /Applications..."
+rm -rf /Applications/FreeSizeUp.app
+cp -R "$DIR/FreeSizeUp.app" /Applications/
+echo "🔓 Removing Gatekeeper quarantine attribute..."
+xattr -cr /Applications/FreeSizeUp.app
+echo "✅ Installation complete! Launching FreeSizeUp..."
+open /Applications/FreeSizeUp.app
+echo ""
+echo "Press any key to close this window..."
+read -n 1 -s
+EOF
+chmod +x Install.command
 
 echo "✅ App bundle assembled successfully: FreeSizeUp.app"
 echo "👉 You can run it by executing: open FreeSizeUp.app"

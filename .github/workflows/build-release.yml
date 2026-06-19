@@ -51,6 +51,7 @@ jobs:
           # Package into a Universal DMG
           mkdir -p dist-universal
           cp -R FreeSizeUp.app dist-universal/
+          cp Install.command dist-universal/
           ln -s /Applications dist-universal/Applications
           hdiutil create -volname "FreeSizeUp Installer" -srcfolder dist-universal -ov -format UDZO FreeSizeUp-Universal.dmg
           rm -rf dist-universal
@@ -62,6 +63,7 @@ jobs:
           cp .build/arm64-apple-macosx/release/FreeSizeUp FreeSizeUp-ARM64.app/Contents/MacOS/FreeSizeUp
           mkdir -p dist-arm64
           cp -R FreeSizeUp-ARM64.app dist-arm64/FreeSizeUp.app
+          cp Install.command dist-arm64/
           ln -s /Applications dist-arm64/Applications
           hdiutil create -volname "FreeSizeUp ARM64" -srcfolder dist-arm64 -ov -format UDZO FreeSizeUp-ARM64.dmg
           rm -rf dist-arm64 FreeSizeUp-ARM64.app
@@ -71,6 +73,7 @@ jobs:
           cp .build/x86_64-apple-macosx/release/FreeSizeUp FreeSizeUp-Intel.app/Contents/MacOS/FreeSizeUp
           mkdir -p dist-intel
           cp -R FreeSizeUp-Intel.app dist-intel/FreeSizeUp.app
+          cp Install.command dist-intel/
           ln -s /Applications dist-intel/Applications
           hdiutil create -volname "FreeSizeUp Intel" -srcfolder dist-intel -ov -format UDZO FreeSizeUp-Intel.dmg
           rm -rf dist-intel FreeSizeUp-Intel.app

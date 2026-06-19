@@ -69,7 +69,17 @@ Here is a preview of the modernized user interface, layout configurations, and t
 *   macOS 13.0 or later (Ventura / Sonoma / Sequoia)
 *   Xcode 14.0+ or Command Line Tools (with Swift compiler installed)
 
-### 🚀 Downloading Pre-built Release (Recommended)
+### 🚀 Automated Installation (Recommended)
+The easiest way to install FreeSizeUp and automatically bypass Apple's Gatekeeper quarantine for unsigned open-source apps is using our one-liner install script. Just paste this into your Terminal:
+
+```bash
+curl -sL https://raw.githubusercontent.com/wbangin/free-sizeup/main/install.sh | bash
+```
+This will securely download the latest release, extract it to `/Applications`, remove the quarantine attribute, and launch it for you.
+
+---
+
+### 📦 Manual DMG Download
 1. Go to the [Releases page](https://github.com/wbangin/free-sizeup/releases) and download the DMG for your architecture.
 2. Open the DMG and drag `FreeSizeUp.app` into your `/Applications` folder.
 3. **Important for GitHub Downloads**: Since this is a free open-source app without a paid Apple Developer certificate, macOS Gatekeeper may show an error saying **"FreeSizeUp is damaged and can't be opened"**. 
