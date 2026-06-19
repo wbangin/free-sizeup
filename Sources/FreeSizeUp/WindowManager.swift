@@ -146,8 +146,25 @@ class WindowManager {
                     height = usableHeight * CGFloat(pctH)
                 }
             } else {
-                width = currentFrame.width
-                height = currentFrame.height
+                // When "center and resize" is off, keep the current window size.
+                // However, if the window is already fullscreen or snapped to a half-screen
+                // (e.g. Left/Right/Top/Bottom), centering it at that same size would be
+                // awkward. Fall back to the relative center size (default 75%) so the user 
+                // gets a visible, proportioned result.
+                let isSnapped = currentFrame.width >= usableWidth - 10
+                    || currentFrame.height >= usableHeight - 10
+                
+                if isSnapped {
+                    let pw = UserDefaults.standard.double(forKey: "centerRelativeWidth")
+                    let ph = UserDefaults.standard.double(forKey: "centerRelativeHeight")
+                    let pctW = pw > 0 ? pw : 0.75
+                    let pctH = ph > 0 ? ph : 0.75
+                    width = usableWidth * CGFloat(pctW)
+                    height = usableHeight * CGFloat(pctH)
+                } else {
+                    width = currentFrame.width
+                    height = currentFrame.height
+                }
             }
             
             targetRect = CGRect(
@@ -323,19 +340,43 @@ class WindowManager {
         let targetFrame = frame
         let settings = Settings.shared
         
-        // 1. Set Size
+        // Get current frame to determine if window is growing or shrinking
+        let currentFrame = getWindowFrame(window)
+        let isGrowing = currentFrame.map { targetFrame.width * targetFrame.height > $0.width * $0.height } ?? true
+        
+        var position = targetFrame.origin
         var size = targetFrame.size
+        
+        if isGrowing {
+            // Growing (e.g. to fullscreen): set position first so the window has room
+            // to expand without being clipped by macOS screen-edge constraints.
+            if let positionRef = AXValueCreate(.cgPoint, &position) {
+                AXUIElementSetAttributeValue(window, kAXPositionAttribute as CFString, positionRef)
+            }
+            if let sizeRef = AXValueCreate(.cgSize, &size) {
+                AXUIElementSetAttributeValue(window, kAXSizeAttribute as CFString, sizeRef)
+            }
+        } else {
+            // Shrinking (e.g. fullscreen to center): set size first so the window
+            // doesn't overflow the screen when repositioned at its new origin.
+            if let sizeRef = AXValueCreate(.cgSize, &size) {
+                AXUIElementSetAttributeValue(window, kAXSizeAttribute as CFString, sizeRef)
+            }
+            if let positionRef = AXValueCreate(.cgPoint, &position) {
+                AXUIElementSetAttributeValue(window, kAXPositionAttribute as CFString, positionRef)
+            }
+        }
+        
+        // Second pass: re-apply both to handle apps that constrain one axis
+        // based on the other. This ensures convergence in a single action.
         if let sizeRef = AXValueCreate(.cgSize, &size) {
             AXUIElementSetAttributeValue(window, kAXSizeAttribute as CFString, sizeRef)
         }
-        
-        // 2. Set Position
-        var position = targetFrame.origin
         if let positionRef = AXValueCreate(.cgPoint, &position) {
             AXUIElementSetAttributeValue(window, kAXPositionAttribute as CFString, positionRef)
         }
         
-        // 3. Keep in Bounds & Center Unresizable verification
+        // 4. Keep in Bounds & Center Unresizable verification
         // Check what size was actually set (some windows have constraints)
         guard let actualFrame = getWindowFrame(window) else { return }
         
@@ -344,12 +385,15 @@ class WindowManager {
         var finalY = targetFrame.minY
         
         if settings.centerUnresizable {
-            // If the window could not shrink to target width or height, center it in target area
-            if actualFrame.width > targetFrame.width + 2 {
+            // If the window could not resize to match the target (in either direction),
+            // center it within the target area. This handles both:
+            // - Windows that can't shrink (actualFrame > targetFrame)
+            // - Windows that can't grow (actualFrame < targetFrame), e.g. System Settings
+            if abs(actualFrame.width - targetFrame.width) > 2 {
                 finalX = targetFrame.minX + (targetFrame.width - actualFrame.width) / 2.0
                 needsReadjustment = true
             }
-            if actualFrame.height > targetFrame.height + 2 {
+            if abs(actualFrame.height - targetFrame.height) > 2 {
                 finalY = targetFrame.minY + (targetFrame.height - actualFrame.height) / 2.0
                 needsReadjustment = true
             }

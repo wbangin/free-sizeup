@@ -114,9 +114,11 @@ struct PreferencesView: View {
                         
                         Button("Grant Access") {
                             _ = WindowManager.shared.checkAccessibilityPermissions(prompt: true)
-                            // Re-verify after a delay
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                                hasAccessibilityPermission = WindowManager.shared.checkAccessibilityPermissions(prompt: false)
+                            // Re-verify with multiple delayed checks to catch the grant
+                            for delay in [0.5, 1.0, 2.0, 3.0, 5.0] {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                                    hasAccessibilityPermission = WindowManager.shared.checkAccessibilityPermissions(prompt: false)
+                                }
                             }
                         }
                         .buttonStyle(.borderedProminent)
@@ -149,7 +151,11 @@ struct PreferencesView: View {
             .background(Color(NSColor.windowBackgroundColor))
         }
         .frame(width: 720, height: 500)
-        .onReceive(Timer.publish(every: 2.0, on: .main, in: .common).autoconnect()) { _ in
+        .onReceive(Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()) { _ in
+            hasAccessibilityPermission = WindowManager.shared.checkAccessibilityPermissions(prompt: false)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
+            // Immediately re-check when user switches back from System Settings
             hasAccessibilityPermission = WindowManager.shared.checkAccessibilityPermissions(prompt: false)
         }
     }

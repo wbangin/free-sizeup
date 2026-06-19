@@ -62,7 +62,7 @@ cp "$BINARY_PATH" "$MACOS_DIR/FreeSizeUp"
 
 # 5. Create standard Info.plist configuration file
 echo "📄 Writing Info.plist configuration..."
-APP_VERSION="${VERSION:-1.1.0}"
+APP_VERSION="${VERSION:-1.1.1}"
 cat <<EOF > "$CONTENTS_DIR/Info.plist"
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
