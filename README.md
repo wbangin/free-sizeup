@@ -8,6 +8,8 @@
 
 Designed with native performance and premium Apple design aesthetics in mind, FreeSizeUp allows you to split, resize, and position windows instantly across multiple displays and virtual spaces using lightweight global hotkeys.
 
+[🇨🇳 中文版 (Chinese Version)](README_zh.md)
+
 ---
 
 ## 🎨 Visual Preview

@@ -155,6 +155,7 @@ class Settings: ObservableObject {
     @Published var showInMenuBar: Bool = true
     @Published var showVisualActionOverlay: Bool = true
     @Published var enableShortcuts: Bool = true
+    @Published var language: String = "system" // "system", "en", "zh-Hans"
     
     // Margins Settings (pixels)
     @Published var marginTop: Int = 0
@@ -185,6 +186,7 @@ class Settings: ObservableObject {
             $showInMenuBar.map { _ in () }.eraseToAnyPublisher(),
             $showVisualActionOverlay.map { _ in () }.eraseToAnyPublisher(),
             $enableShortcuts.map { _ in () }.eraseToAnyPublisher(),
+            $language.map { _ in () }.eraseToAnyPublisher(),
             Publishers.MergeMany(
                 $marginTop.map { _ in () }.eraseToAnyPublisher(),
                 $marginBottom.map { _ in () }.eraseToAnyPublisher(),
@@ -217,6 +219,7 @@ class Settings: ObservableObject {
         showInMenuBar = true
         showVisualActionOverlay = true
         enableShortcuts = true
+        language = "system"
         
         marginTop = 0
         marginBottom = 0
@@ -279,6 +282,7 @@ class Settings: ObservableObject {
         showInMenuBar = defaults.object(forKey: "showInMenuBar") == nil ? true : defaults.bool(forKey: "showInMenuBar")
         showVisualActionOverlay = defaults.object(forKey: "showVisualActionOverlay") == nil ? true : defaults.bool(forKey: "showVisualActionOverlay")
         enableShortcuts = defaults.object(forKey: "enableShortcuts") == nil ? true : defaults.bool(forKey: "enableShortcuts")
+        language = defaults.string(forKey: "language") ?? "system"
         
         marginTop = defaults.integer(forKey: "marginTop")
         marginBottom = defaults.integer(forKey: "marginBottom")
@@ -310,6 +314,7 @@ class Settings: ObservableObject {
         defaults.set(showInMenuBar, forKey: "showInMenuBar")
         defaults.set(showVisualActionOverlay, forKey: "showVisualActionOverlay")
         defaults.set(enableShortcuts, forKey: "enableShortcuts")
+        defaults.set(language, forKey: "language")
         
         defaults.set(marginTop, forKey: "marginTop")
         defaults.set(marginBottom, forKey: "marginBottom")

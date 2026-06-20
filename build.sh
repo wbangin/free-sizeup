@@ -20,6 +20,11 @@ echo "📂 Creating application bundle directory structure..."
 mkdir -p "$MACOS_DIR"
 mkdir -p "$RESOURCES_DIR"
 
+if ls Resources/*.lproj 1> /dev/null 2>&1; then
+    echo "🌐 Copying Localization bundles..."
+    cp -R Resources/*.lproj "$RESOURCES_DIR/"
+fi
+
 if [ -f ".build/arm64-apple-macosx/release/FreeSizeUp" ] && [ -f ".build/x86_64-apple-macosx/release/FreeSizeUp" ]; then
     echo "🔗 Packaging architectures into Universal Binary..."
     mkdir -p .build/universal
@@ -62,7 +67,7 @@ cp "$BINARY_PATH" "$MACOS_DIR/FreeSizeUp"
 
 # 5. Create standard Info.plist configuration file
 echo "📄 Writing Info.plist configuration..."
-APP_VERSION="${VERSION:-1.1.2}"
+APP_VERSION="${VERSION:-1.2.0}"
 cat <<EOF > "$CONTENTS_DIR/Info.plist"
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">

@@ -36,9 +36,22 @@ struct PreferencesView: View {
     // Accessibility Permission Status
     @State private var hasAccessibilityPermission = WindowManager.shared.checkAccessibilityPermissions(prompt: false)
     
+    // Per-tab ideal content panel width
+    private var contentPanelWidth: CGFloat {
+        switch activeTab {
+        case .general:    return 560
+        case .shortcuts:  return 600
+        case .margins:    return 580
+        case .partitions: return 600
+        case .advanced:   return 580
+        }
+    }
+    
+    private let sidebarWidth: CGFloat = 200
+    
     var body: some View {
         HStack(spacing: 0) {
-            // 1. Sidebar Navigation
+            // 1. Sidebar Navigation — absolutely fixed width
             VStack(alignment: .leading, spacing: 6) {
                 Text("FreeSizeUp")
                     .font(.system(.title3, design: .rounded))
@@ -62,7 +75,7 @@ struct PreferencesView: View {
                                     .foregroundColor(tab.color)
                             }
                             
-                            Text(tab.rawValue)
+                            Text(LocalizedStringKey(tab.rawValue))
                                 .font(.system(.body, design: .rounded))
                                 .fontWeight(activeTab == tab ? .semibold : .regular)
                                 .foregroundColor(activeTab == tab ? .primary : .secondary)
@@ -86,13 +99,13 @@ struct PreferencesView: View {
                     .padding(.horizontal, 16)
                     .padding(.bottom, 20)
             }
-            .frame(width: 180)
+            .frame(minWidth: sidebarWidth, idealWidth: sidebarWidth, maxWidth: sidebarWidth)
             .background(Color.primary.opacity(0.02))
             .overlay(
                 Divider().frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)
             )
             
-            // 2. Main content Panel
+            // 2. Main content Panel — width adapts per tab
             VStack(spacing: 0) {
                 // Header Alert for missing Accessibility Permissions
                 if !hasAccessibilityPermission {
@@ -114,7 +127,6 @@ struct PreferencesView: View {
                         
                         Button("Grant Access") {
                             _ = WindowManager.shared.checkAccessibilityPermissions(prompt: true)
-                            // Re-verify with multiple delayed checks to catch the grant
                             for delay in [0.5, 1.0, 2.0, 3.0, 5.0] {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                                     hasAccessibilityPermission = WindowManager.shared.checkAccessibilityPermissions(prompt: false)
@@ -147,10 +159,12 @@ struct PreferencesView: View {
                     .padding(28)
                 }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .frame(width: contentPanelWidth, alignment: .leading)
             .background(Color(NSColor.windowBackgroundColor))
         }
-        .frame(width: 720, height: 500)
+        .frame(width: sidebarWidth + contentPanelWidth)
+        .frame(minHeight: 520)
+        .environment(\.locale, settings.language == "system" ? .current : Locale(identifier: settings.language))
         .onReceive(Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()) { _ in
             hasAccessibilityPermission = WindowManager.shared.checkAccessibilityPermissions(prompt: false)
         }
@@ -196,7 +210,7 @@ struct PreferencesView: View {
                                     }
                                 }
                                 
-                                Text(item.rawValue)
+                                Text(LocalizedStringKey(item.rawValue))
                                     .font(.system(.caption, design: .rounded))
                                     .fontWeight(.medium)
                                     .foregroundColor(settings.theme == item ? .blue : .primary)
@@ -205,6 +219,20 @@ struct PreferencesView: View {
                         .buttonStyle(.plain)
                     }
                 }
+            }
+            .padding(.bottom, 8)
+            
+            VStack(alignment: .leading, spacing: 14) {
+                Text("Language")
+                    .fontWeight(.semibold)
+                
+                Picker("", selection: $settings.language) {
+                    Text("System Default").tag("system")
+                    Text("English").tag("en")
+                    Text("简体中文").tag("zh-Hans")
+                }
+                .pickerStyle(.segmented)
+                .frame(width: 300)
             }
             .padding(.bottom, 8)
             
@@ -297,6 +325,7 @@ struct PreferencesView: View {
             Text("Click on any shortcut field below and press your desired keyboard combination to record it.")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
                 .padding(.bottom, 6)
             
             Group {
@@ -337,7 +366,7 @@ struct PreferencesView: View {
         }
     }
     
-    private func shortcutCategoryHeader(_ title: String, icon: String) -> some View {
+    private func shortcutCategoryHeader(_ title: LocalizedStringKey, icon: String) -> some View {
         HStack(spacing: 8) {
             Image(systemName: icon)
                 .foregroundColor(.secondary)
@@ -351,7 +380,7 @@ struct PreferencesView: View {
         .padding(.vertical, 4)
     }
     
-    private func shortcutRow(_ label: String, action: WindowAction) -> some View {
+    private func shortcutRow(_ label: LocalizedStringKey, action: WindowAction) -> some View {
         HStack(spacing: 12) {
             // Unified mini layout schematic icon
             MiniSchematicIcon(action: action)
@@ -383,6 +412,7 @@ struct PreferencesView: View {
             Text("Define margin offsets (in pixels) around screen borders. Resized windows will not overlap these margins.")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
             
             HStack(spacing: 40) {
                 // Stepper Settings Form
@@ -436,7 +466,7 @@ struct PreferencesView: View {
         }
     }
     
-    private func marginStepper(_ label: String, value: Binding<Int>) -> some View {
+    private func marginStepper(_ label: LocalizedStringKey, value: Binding<Int>) -> some View {
         HStack {
             Text(label)
             Spacer()
@@ -459,6 +489,7 @@ struct PreferencesView: View {
             Text("Adjust partition split percentages below. Customize how much screen area halves and corners occupy.")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
             
             HStack(spacing: 40) {
                 // Partition Ratio Sliders

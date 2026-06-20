@@ -1,0 +1,96 @@
+/* General Settings */
+"General" = "通用";
+"Shortcuts" = "快捷键";
+"Margins" = "边缘留白";
+"Partitions" = "分屏比例";
+"Advanced" = "高级设置";
+"General Settings" = "通用设置";
+"Appearance Theme" = "外观主题";
+"System" = "跟随系统";
+"Light" = "浅色";
+"Dark" = "深色";
+"Application Control" = "应用程序控制";
+"Start FreeSizeUp Automatically at Login" = "开机时自动启动 FreeSizeUp";
+"Show Preferences on Launch" = "启动时显示偏好设置窗口";
+"Show FreeSizeUp in Menu Bar" = "在菜单栏中显示";
+"Show Visual Action Overlay (HUD on Trigger)" = "执行快捷键时显示屏幕反馈动画 (HUD)";
+"Enable Global Window Shortcuts" = "启用全局窗口快捷键";
+"Language" = "语言 (Language)";
+"System Default" = "跟随系统默认";
+"English" = "English (英文)";
+
+/* Shortcuts */
+"Shortcut Configurations" = "快捷键配置";
+"Click on any shortcut field below and press your desired keyboard combination to record it." = "点击下方的任意快捷键输入框，然后按下您想要的按键组合进行录制。";
+"Restore Defaults" = "恢复默认快捷键";
+"Split Screen Actions" = "分屏操作";
+"Left Half" = "左半屏";
+"Right Half" = "右半屏";
+"Top Half" = "上半屏";
+"Bottom Half" = "下半屏";
+"Quarter Screen (Quadrant) Actions" = "四分之一屏 (角落) 操作";
+"Upper Left Corner" = "左上角";
+"Upper Right Corner" = "右上角";
+"Lower Left Corner" = "左下角";
+"Lower Right Corner" = "右下角";
+"Display & Spaces Actions" = "显示器与桌面空间操作";
+"Previous Monitor" = "上一个显示器";
+"Next Monitor" = "下一个显示器";
+"Previous Space" = "上一个桌面空间";
+"Next Space" = "下一个桌面空间";
+"Other Actions & SnapBack" = "其他操作与撤销";
+"Full Screen" = "全屏显示";
+"Center" = "居中显示";
+"SnapBack (Undo)" = "撤销 (SnapBack)";
+
+/* Margins & Partitions */
+"Margins & Partitions" = "边距与分割比例";
+"Screen Edge Margins" = "屏幕边缘留白 (Margins)";
+"Define margin offsets (in pixels) around screen borders. Resized windows will not overlap these margins." = "定义屏幕四周的边距（以像素为单位）。调整大小后的窗口不会覆盖这些区域。";
+"Top Margin" = "顶部边距";
+"Bottom Margin" = "底部边距";
+"Left Margin" = "左侧边距";
+"Right Margin" = "右侧边距";
+"Interactive Preview" = "交互式预览";
+"Usable Area" = "可用区域";
+"Split Screen Partitions" = "分屏比例配置 (Partitions)";
+"Adjust partition split percentages below. Customize how much screen area halves and corners occupy." = "调整左右及上下分屏的百分比。您可以自定义一半屏幕或角落占用多大的屏幕空间。";
+"Left / Right Partition:" = "左 / 右 比例:";
+"Top / Bottom Partition:" = "上 / 下 比例:";
+"Interactive Partition Split" = "交互式分屏比例调整";
+
+/* Advanced Settings */
+"Advanced Settings" = "高级设置";
+"Advanced Options" = "高级选项";
+"Center Windows That Don't Resize Fully (e.g. small sizes)" = "无法铺满区域时自动居中（例如系统设置窗口）";
+"Try To Keep Windows in Bounds (Clamped to Screen Edge)" = "尝试将窗口保持在屏幕可见范围内（贴合屏幕边缘）";
+"Resize Windows Proportionally on Multi-Monitor Shift" = "跨显示器移动窗口时按比例缩放大小";
+"Center Resize Action Settings" = "居中动作 (Center) 设置";
+"When using the 'Center' action, should FreeSizeUp keep the current window size, or resize it?" = "当使用\"居中\"快捷键时，FreeSizeUp 是应该保留当前窗口大小，还是调整它的大小？";
+"Resize Window When Centering" = "居中时同时调整窗口大小";
+"Keep current window size (Only move to center)" = "保留当前窗口大小 (仅移动到中间)";
+"Center and resize the window" = "居中并调整窗口大小";
+"Absolute Dimension (Pixels)" = "绝对尺寸 (按像素)";
+"Relative Dimension (% of Screen)" = "相对尺寸 (占屏幕百分比)";
+"Width:" = "宽度:";
+"Height:" = "高度:";
+"px" = "像素";
+"Width (%):" = "宽度 (%):";
+"Height (%):" = "高度 (%):";
+
+/* Window Title */
+"FreeSizeUp Preferences" = "FreeSizeUp 偏好设置";
+/* Permissions */
+"Accessibility Permission Required" = "需要辅助功能权限";
+"FreeSizeUp needs access to control and resize windows of other apps." = "FreeSizeUp 需要获取辅助功能权限，才能控制和调整其他应用程序的窗口大小。";
+"Grant Access" = "去授权 (Grant Access)";
+
+/* Menus */
+"Preferences..." = "偏好设置...";
+"Quit FreeSizeUp" = "退出 FreeSizeUp";
+"About FreeSizeUp" = "关于 FreeSizeUp";
+"Disable Shortcuts" = "禁用全局快捷键";
+
+/* Recorder */
+"Press shortcuts..." = "请按下快捷键...";
+"Record Shortcut" = "录制快捷键";

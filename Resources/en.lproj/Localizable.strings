@@ -1,0 +1,96 @@
+/* General Settings */
+"General" = "General";
+"Shortcuts" = "Shortcuts";
+"Margins" = "Margins";
+"Partitions" = "Partitions";
+"Advanced" = "Advanced";
+"General Settings" = "General Settings";
+"Appearance Theme" = "Appearance Theme";
+"System" = "System";
+"Light" = "Light";
+"Dark" = "Dark";
+"Application Control" = "Application Control";
+"Start FreeSizeUp Automatically at Login" = "Start FreeSizeUp Automatically at Login";
+"Show Preferences on Launch" = "Show Preferences on Launch";
+"Show FreeSizeUp in Menu Bar" = "Show FreeSizeUp in Menu Bar";
+"Show Visual Action Overlay (HUD on Trigger)" = "Show Visual Action Overlay (HUD on Trigger)";
+"Enable Global Window Shortcuts" = "Enable Global Window Shortcuts";
+"Language" = "Language";
+"System Default" = "System Default";
+"English" = "English";
+
+/* Shortcuts */
+"Shortcut Configurations" = "Shortcut Configurations";
+"Click on any shortcut field below and press your desired keyboard combination to record it." = "Click on any shortcut field below and press your desired keyboard combination to record it.";
+"Restore Defaults" = "Restore Defaults";
+"Split Screen Actions" = "Split Screen Actions";
+"Left Half" = "Left Half";
+"Right Half" = "Right Half";
+"Top Half" = "Top Half";
+"Bottom Half" = "Bottom Half";
+"Quarter Screen (Quadrant) Actions" = "Quarter Screen (Quadrant) Actions";
+"Upper Left Corner" = "Upper Left Corner";
+"Upper Right Corner" = "Upper Right Corner";
+"Lower Left Corner" = "Lower Left Corner";
+"Lower Right Corner" = "Lower Right Corner";
+"Display & Spaces Actions" = "Display & Spaces Actions";
+"Previous Monitor" = "Previous Monitor";
+"Next Monitor" = "Next Monitor";
+"Previous Space" = "Previous Space";
+"Next Space" = "Next Space";
+"Other Actions & SnapBack" = "Other Actions & SnapBack";
+"Full Screen" = "Full Screen";
+"Center" = "Center";
+"SnapBack (Undo)" = "SnapBack (Undo)";
+
+/* Margins & Partitions */
+"Margins & Partitions" = "Margins & Partitions";
+"Screen Edge Margins" = "Screen Edge Margins";
+"Define margin offsets (in pixels) around screen borders. Resized windows will not overlap these margins." = "Define margin offsets (in pixels) around screen borders. Resized windows will not overlap these margins.";
+"Top Margin" = "Top Margin";
+"Bottom Margin" = "Bottom Margin";
+"Left Margin" = "Left Margin";
+"Right Margin" = "Right Margin";
+"Interactive Preview" = "Interactive Preview";
+"Usable Area" = "Usable Area";
+"Split Screen Partitions" = "Split Screen Partitions";
+"Adjust partition split percentages below. Customize how much screen area halves and corners occupy." = "Adjust partition split percentages below. Customize how much screen area halves and corners occupy.";
+"Left / Right Partition:" = "Left / Right Partition:";
+"Top / Bottom Partition:" = "Top / Bottom Partition:";
+"Interactive Partition Split" = "Interactive Partition Split";
+
+/* Advanced Settings */
+"Advanced Settings" = "Advanced Settings";
+"Advanced Options" = "Advanced Options";
+"Center Windows That Don't Resize Fully (e.g. small sizes)" = "Center Windows That Don't Resize Fully (e.g. small sizes)";
+"Try To Keep Windows in Bounds (Clamped to Screen Edge)" = "Try To Keep Windows in Bounds (Clamped to Screen Edge)";
+"Resize Windows Proportionally on Multi-Monitor Shift" = "Resize Windows Proportionally on Multi-Monitor Shift";
+"Center Resize Action Settings" = "Center Resize Action Settings";
+"When using the 'Center' action, should FreeSizeUp keep the current window size, or resize it?" = "When using the 'Center' action, should FreeSizeUp keep the current window size, or resize it?";
+"Resize Window When Centering" = "Resize Window When Centering";
+"Keep current window size (Only move to center)" = "Keep current window size (Only move to center)";
+"Center and resize the window" = "Center and resize the window";
+"Absolute Dimension (Pixels)" = "Absolute Dimension (Pixels)";
+"Relative Dimension (% of Screen)" = "Relative Dimension (% of Screen)";
+"Width:" = "Width:";
+"Height:" = "Height:";
+"px" = "px";
+"Width (%):" = "Width (%):";
+"Height (%):" = "Height (%):";
+
+/* Window Title */
+"FreeSizeUp Preferences" = "FreeSizeUp Preferences";
+/* Permissions */
+"Accessibility Permission Required" = "Accessibility Permission Required";
+"FreeSizeUp needs access to control and resize windows of other apps." = "FreeSizeUp needs access to control and resize windows of other apps.";
+"Grant Access" = "Grant Access";
+
+/* Menus */
+"Preferences..." = "Preferences...";
+"Quit FreeSizeUp" = "Quit FreeSizeUp";
+"About FreeSizeUp" = "About FreeSizeUp";
+"Disable Shortcuts" = "Disable Shortcuts";
+
+/* Recorder */
+"Press shortcuts..." = "Press shortcuts...";
+"Record Shortcut" = "Record Shortcut";

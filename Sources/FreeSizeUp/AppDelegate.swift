@@ -33,8 +33,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Sync active hotkeys list when global enable/disable switches change
         Settings.shared.$enableShortcuts
             .sink { _ in
-                // Post shortcuts change notification to update active hotkeys
                 NotificationCenter.default.post(name: .shortcutsChanged, object: nil)
+            }
+            .store(in: &cancellables)
+            
+        // Rebuild menu automatically when language or shortcuts change
+        Publishers.CombineLatest(Settings.shared.$language, Settings.shared.$shortcuts)
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                if let item = self?.statusBarItem {
+                    self?.rebuildStatusMenu(for: item)
+                }
+                self?.preferencesWindow?.title = L10n.tr("FreeSizeUp Preferences")
             }
             .store(in: &cancellables)
         
@@ -93,7 +103,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let menu = NSMenu(title: "FreeSizeUp Menu")
         
         // 1. Disable shortcuts checkbox toggle
-        let disableItem = NSMenuItem(title: "Disable Shortcuts", action: #selector(toggleShortcuts(_:)), keyEquivalent: "")
+        let disableItem = NSMenuItem(title: L10n.tr("Disable Shortcuts"), action: #selector(toggleShortcuts(_:)), keyEquivalent: "")
         disableItem.target = self
         disableItem.state = Settings.shared.enableShortcuts ? .off : .on
         if let icon = NSImage.createSchematicIcon(for: nil, systemSymbolName: "keyboard") {
@@ -103,49 +113,49 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         menu.addItem(NSMenuItem.separator())
         
         // 2. Custom action rows
-        addActionItem(menu, title: "Left", action: .left)
-        addActionItem(menu, title: "Right", action: .right)
-        addActionItem(menu, title: "Up", action: .up)
-        addActionItem(menu, title: "Down", action: .down)
+        addActionItem(menu, title: L10n.tr("Left Half"), action: .left)
+        addActionItem(menu, title: L10n.tr("Right Half"), action: .right)
+        addActionItem(menu, title: L10n.tr("Top Half"), action: .up)
+        addActionItem(menu, title: L10n.tr("Bottom Half"), action: .down)
         menu.addItem(NSMenuItem.separator())
         
-        addActionItem(menu, title: "Upper Left", action: .upperLeft)
-        addActionItem(menu, title: "Upper Right", action: .upperRight)
-        addActionItem(menu, title: "Lower Left", action: .lowerLeft)
-        addActionItem(menu, title: "Lower Right", action: .lowerRight)
+        addActionItem(menu, title: L10n.tr("Upper Left Corner"), action: .upperLeft)
+        addActionItem(menu, title: L10n.tr("Upper Right Corner"), action: .upperRight)
+        addActionItem(menu, title: L10n.tr("Lower Left Corner"), action: .lowerLeft)
+        addActionItem(menu, title: L10n.tr("Lower Right Corner"), action: .lowerRight)
         menu.addItem(NSMenuItem.separator())
         
-        addActionItem(menu, title: "Full Screen", action: .fullScreen)
-        addActionItem(menu, title: "Center", action: .center)
+        addActionItem(menu, title: L10n.tr("Full Screen"), action: .fullScreen)
+        addActionItem(menu, title: L10n.tr("Center"), action: .center)
         menu.addItem(NSMenuItem.separator())
         
-        addActionItem(menu, title: "SnapBack", action: .snapBack)
+        addActionItem(menu, title: L10n.tr("SnapBack (Undo)"), action: .snapBack)
         menu.addItem(NSMenuItem.separator())
         
-        addActionItem(menu, title: "Prev Monitor", action: .prevMonitor)
-        addActionItem(menu, title: "Next Monitor", action: .nextMonitor)
+        addActionItem(menu, title: L10n.tr("Previous Monitor"), action: .prevMonitor)
+        addActionItem(menu, title: L10n.tr("Next Monitor"), action: .nextMonitor)
         menu.addItem(NSMenuItem.separator())
         
-        addActionItem(menu, title: "Space Prev", action: .spacePrev)
-        addActionItem(menu, title: "Space Next", action: .spaceNext)
+        addActionItem(menu, title: L10n.tr("Previous Space"), action: .spacePrev)
+        addActionItem(menu, title: L10n.tr("Next Space"), action: .spaceNext)
         menu.addItem(NSMenuItem.separator())
         
         // 3. System operations
-        let aboutItem = NSMenuItem(title: "About FreeSizeUp", action: #selector(showAboutPanel), keyEquivalent: "")
+        let aboutItem = NSMenuItem(title: L10n.tr("About FreeSizeUp"), action: #selector(showAboutPanel), keyEquivalent: "")
         aboutItem.target = self
         if let icon = NSImage.createSchematicIcon(for: nil, systemSymbolName: "info.circle") {
             aboutItem.image = icon
         }
         menu.addItem(aboutItem)
         
-        let preferencesItem = NSMenuItem(title: "Preferences...", action: #selector(openPreferencesMenu), keyEquivalent: ",")
+        let preferencesItem = NSMenuItem(title: L10n.tr("Preferences..."), action: #selector(openPreferencesMenu), keyEquivalent: ",")
         preferencesItem.target = self
         if let icon = NSImage.createSchematicIcon(for: nil, systemSymbolName: "gearshape") {
             preferencesItem.image = icon
         }
         menu.addItem(preferencesItem)
         
-        let quitItem = NSMenuItem(title: "Quit FreeSizeUp", action: #selector(quitApp), keyEquivalent: "q")
+        let quitItem = NSMenuItem(title: L10n.tr("Quit FreeSizeUp"), action: #selector(quitApp), keyEquivalent: "q")
         quitItem.target = self
         if let icon = NSImage.createSchematicIcon(for: nil, systemSymbolName: "power") {
             quitItem.image = icon
@@ -216,7 +226,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 defer: false
             )
             
-            window.title = "FreeSizeUp Preferences"
+            window.title = L10n.tr("FreeSizeUp Preferences")
             window.contentViewController = hostingController
             window.isReleasedWhenClosed = false
             window.center()
