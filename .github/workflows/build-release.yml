@@ -48,35 +48,28 @@ jobs:
           chmod +x build.sh
           VERSION="$VERSION" ./build.sh
           
-          # Package into a Universal DMG
-          mkdir -p dist-universal
-          cp -R FreeSizeUp.app dist-universal/
-          cp Install.command dist-universal/
-          ln -s /Applications dist-universal/Applications
-          hdiutil create -volname "FreeSizeUp Installer" -srcfolder dist-universal -ov -format UDZO FreeSizeUp-Universal.dmg
-          rm -rf dist-universal
+          # Package into a styled DMG with background using appdmg
+          npx appdmg appdmg.json FreeSizeUp-Universal.dmg
 
       - name: Package Single-Arch DMGs
         run: |
           # ARM64 (Apple Silicon) DMG
           cp -R FreeSizeUp.app FreeSizeUp-ARM64.app
           cp .build/arm64-apple-macosx/release/FreeSizeUp FreeSizeUp-ARM64.app/Contents/MacOS/FreeSizeUp
-          mkdir -p dist-arm64
-          cp -R FreeSizeUp-ARM64.app dist-arm64/FreeSizeUp.app
-          cp Install.command dist-arm64/
-          ln -s /Applications dist-arm64/Applications
-          hdiutil create -volname "FreeSizeUp ARM64" -srcfolder dist-arm64 -ov -format UDZO FreeSizeUp-ARM64.dmg
-          rm -rf dist-arm64 FreeSizeUp-ARM64.app
+          mv FreeSizeUp.app FreeSizeUp-Universal.app
+          mv FreeSizeUp-ARM64.app FreeSizeUp.app
+          npx appdmg appdmg.json FreeSizeUp-ARM64.dmg
+          mv FreeSizeUp.app FreeSizeUp-ARM64.app
 
           # Intel x86_64 DMG
-          cp -R FreeSizeUp.app FreeSizeUp-Intel.app
+          cp -R FreeSizeUp-Universal.app FreeSizeUp-Intel.app
           cp .build/x86_64-apple-macosx/release/FreeSizeUp FreeSizeUp-Intel.app/Contents/MacOS/FreeSizeUp
-          mkdir -p dist-intel
-          cp -R FreeSizeUp-Intel.app dist-intel/FreeSizeUp.app
-          cp Install.command dist-intel/
-          ln -s /Applications dist-intel/Applications
-          hdiutil create -volname "FreeSizeUp Intel" -srcfolder dist-intel -ov -format UDZO FreeSizeUp-Intel.dmg
-          rm -rf dist-intel FreeSizeUp-Intel.app
+          mv FreeSizeUp-Intel.app FreeSizeUp.app
+          npx appdmg appdmg.json FreeSizeUp-Intel.dmg
+          
+          # Restore universal app
+          rm -rf FreeSizeUp.app FreeSizeUp-ARM64.app
+          mv FreeSizeUp-Universal.app FreeSizeUp.app
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1

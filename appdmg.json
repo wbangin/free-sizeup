@@ -1,0 +1,17 @@
+{
+  "title": "FreeSizeUp",
+  "icon": "FreeSizeUp.app/Contents/Resources/AppIcon.icns",
+  "background": "Resources/dmg_background.png",
+  "contents": [
+    { "x": 165, "y": 240, "type": "file", "path": "FreeSizeUp.app" },
+    { "x": 330, "y": 240, "type": "file", "path": "Install.command" },
+    { "x": 495, "y": 240, "type": "link", "path": "/Applications" }
+  ],
+  "window": {
+    "size": {
+      "width": 660,
+      "height": 440
+    }
+  },
+  "format": "ULFO"
+}
